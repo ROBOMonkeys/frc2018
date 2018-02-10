@@ -1,8 +1,8 @@
 import wpilib as wpi
-import enums
+import wpilib.drive as drive
+from wpilib.interfaces.generichid import GenericHID
 
-
-class MyRobot(wpilib.IterativeRobot):
+class MyRobot(wpi.IterativeRobot):
     def robotInit(self):
 
         self.frontLeftMotor = wpi.Spark(2)
@@ -13,23 +13,20 @@ class MyRobot(wpilib.IterativeRobot):
         self.left = wpi.SpeedControllerGroup(self.frontLeftMotor, self.rearLeftMotor)
         self.right = wpi.SpeedControllerGroup(self.frontRightMotor, self.rearRightMotor)
 
-        self.myRobot = DifferentialDrive(self.left, self.right)
-        self.myRobot.setExpiration(0.1)
+        self.drive = drive.DifferentialDrive(self.left, self.right)
+        self.drive.setExpiration(0.1)
 
-        self.leftStick = wpi.Joystick(0)
-        self.rightStick = wpi.Joystick(1)
-
-    def autonomousInit(self):
-
+        self.controller = wpi.XboxController(0)
 
     def teleopInit(self):
 
-        self.myRobot.setSafetyEnabled(True)
+        self.drive.setSafetyEnabled(True)
 
     def teleopPeriodic(self):
 
-        self.myRobot.tankDrive(self.leftStick.getY() * -1, self.rightStick.getY() * -1)
+        self.drive.tankDrive(self.controller.getY(GenericHID.Hand.kLeft) * -1, self.controller.getY(GenericHID.Hand.kRight) * -1)
 
+  #  def autonomousInit(self):
 
 if __name__ == '__main__':
-    wpilib.run(MyRobot)
+    wpi.run(MyRobot)
