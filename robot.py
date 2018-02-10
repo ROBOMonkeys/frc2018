@@ -5,10 +5,10 @@ import enums
 class MyRobot(wpilib.IterativeRobot):
     def robotInit(self):
 
-        self.frontLeftMotor = wpi.Spark()
-        self.rearLeftMotor = wpi.Spark()
-        self.frontRightMotor = wpi.Spark()
-        self.rearRightMotor = wpi.Spark()
+        self.frontLeftMotor = wpi.Spark(2)
+        self.rearLeftMotor = wpi.Spark(3)
+        self.frontRightMotor = wpi.Spark(1)
+        self.rearRightMotor = wpi.Spark(0)
 
         self.left = wpi.SpeedControllerGroup(self.frontLeftMotor, self.rearLeftMotor)
         self.right = wpi.SpeedControllerGroup(self.frontRightMotor, self.rearRightMotor)
