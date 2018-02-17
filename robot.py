@@ -111,9 +111,5 @@ class MyRobot(wpi.IterativeRobot):
             self.drive.tankDrive(0,0)
 
 
-
-
-
-
 if __name__ == '__main__':
 wpi.run(MyRobot)
