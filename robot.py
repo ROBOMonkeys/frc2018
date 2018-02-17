@@ -2,6 +2,7 @@ import wpilib as wpi
 import wpilib.drive as drive
 from wpilib.interfaces.generichid import GenericHID
 
+
 class MyRobot(wpi.IterativeRobot):
     def robotInit(self):
         self.auto_goal = 0
@@ -12,8 +13,8 @@ class MyRobot(wpi.IterativeRobot):
         self.sd.putBoolean("Center Lane", False)
         self.sd.putBoolean("Left lane", False)
         self.sd.putBoolean("Right lane", False)
-        self.sd.putBoolean("right goal",False)
-        self.sd.putBoolean("left goal",False)
+        self.sd.putBoolean("right goal", False)
+        self.sd.putBoolean("left goal", False)
         self.solenoid = wpi.Solenoid(0)
         self.lift = wpi.Spark(5)
         self.frontLeftMotor = wpi.Spark(2)
@@ -25,7 +26,7 @@ class MyRobot(wpi.IterativeRobot):
         self.right = wpi.SpeedControllerGroup(self.frontRightMotor, self.rearRightMotor)
 
         self.drive = drive.DifferentialDrive(self.left, self.right)
-        self.drive.setExpiration(0.1)
+        #self.drive.setExpiration(0.1)
         self.joystick = wpi.XboxController(0)
 
         self.timer = wpi.Timer()
@@ -46,8 +47,6 @@ class MyRobot(wpi.IterativeRobot):
                 self.solenoid.set(True)
             else:
                 self.solenoid.set(False)
-
-
 
         # for grabber piston boiii
         if self.joystick.getAButton() and self.timer.get() > 0.2:
@@ -73,15 +72,15 @@ class MyRobot(wpi.IterativeRobot):
             self.auto_state = 4
 
         if self.sd.getBoolean("left goal", False):
-            self.sd.getBoolean = 5
+            self.auto_goal = 5
         elif self.sd.getBoolean("right goal", False):
-            self.sd.getBoolean = 6
+            self.auto_goal = 6
 
-        #self.timer.stop()
+        self.timer.stop()
         self.timer.reset()
         self.timer.start()
 
-    def autonomousPeriod(self):
+    def autonomousPeriodic(self):
         #left lane left goal
         if self.auto_state == 1:
             if self.auto_goal == 5:
