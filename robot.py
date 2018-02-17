@@ -63,9 +63,23 @@ class MyRobot(wpi.IterativeRobot):
 
 
     def autonomousInit(self):
+        if self.sd.getBoolean("left switch Autonomous Right"):
+            self.auto_state = 2
+        elif self.sd.getBoolean(" left switch Autonomous Left "):
+            self.auto_state = 1
+        elif self.sd.getBoolean("left switch Autonomous Center"):
+            self.auto_state = 3
+        elif self.sd.getBoolean("right switch autonomous Right"):
+            self.auto_state = 4
+        elif self.sd.getBoolean("right switch autonomous Left"):
+            self.sd.getBoolean = 5
+        elif self.sd.getBoolean("right switch autonomous center"):
+            self.sd.getBoolean = 6
+
         self.timer.stop()
         self.timer.reset()
         self.timer.start()
+
     def autonomousPeriod(self):
         #left side left switch boi
      if self.auto_state == 1:
@@ -89,13 +103,13 @@ class MyRobot(wpi.IterativeRobot):
      elif self.auto_state == 3:
            if self.timer.get() < 1.000:
             self.drive.tankDrive(0,.4)
-        elif self.timer.get() < 3.00
+           elif self.timer.get() < 3.00:
             self.drive.tankDrive(.1,.3)
-        elif self.timer.get() < 5.00
+           elif self.timer.get() < 5.00:
             self.drive.tankDrive(.3,.0)
         else:
             self.drive.tankDrive(0, 0)
-       # for left switch right  pos
+       # for right switch right  pos
        elif self.auto_state == 4:
         if self.timer.get() < 1.000:
             self.drive.tankDrive(.2,.2)
@@ -117,9 +131,9 @@ class MyRobot(wpi.IterativeRobot):
         elif self.auto_state == 6:
         if self.timer.get() < 1.000:
          self.drive.tankDrive(.3,.3)
-        elif self.timer.get() < 3.00
+        elif self.timer.get() < 3.00:
          self.drive.tankDrive(.3,.1)
-        elif self.timer.get() < 5.00
+        elif self.timer.get() < 5.00:
             self.drive.tankDrive(.0,.3)
         else:
             self.drive.tankDrive(0,0)
