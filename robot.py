@@ -18,6 +18,9 @@ class MyRobot(wpi.IterativeRobot):
         self.drive.setExpiration(0.1)
         self.controller = wpi.XboxController(0)
 
+        self.timer = wpi.Timer()
+        self.deltaTime = 0
+
     def teleopInit(self):
 
         self.drive.setSafetyEnabled(True)
@@ -50,7 +53,12 @@ class MyRobot(wpi.IterativeRobot):
 
         self.drive.tankDrive(self.controller.getY(GenericHID.Hand.kLeft) * -1, self.controller.getY(GenericHID.Hand.kRight) * -1)
 
-  #  def autonomousInit(self):
+
+    def autonomousInit(self):
+        self.timer.stop()
+        self.timer.reset()
+        self.timer.start()
+
 
 if __name__ == '__main__':
-    wpi.run(MyRobot)
+wpi.run(MyRobot)
