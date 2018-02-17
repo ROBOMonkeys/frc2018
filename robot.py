@@ -59,6 +59,5 @@ class MyRobot(wpi.IterativeRobot):
         self.timer.reset()
         self.timer.start()
 
-
 if __name__ == '__main__':
 wpi.run(MyRobot)
