@@ -58,6 +58,61 @@ class MyRobot(wpi.IterativeRobot):
         self.timer.stop()
         self.timer.reset()
         self.timer.start()
+    def autonomousPeriod(self):
+        #left side left switch boi
+        if self.timer.get() < 1.000:
+            self.drive.tankDrive(.2,.2)
+        elif self.timer.get() < 3.000:
+            self.drive.tankDrive(.4,0)
+        else:
+            self.drive.tankDrive(0, 0)
+        # right side left switch
+        if self.timer.get() < 1.00:
+             self.drive.tankDrive(.2,.2)
+        elif self.timer.get() < 3.000:
+            self.drive.tankDrive(.25,.35)
+        elif self.timer.get() < 4.000:
+            self.drive.tankDrive(.4,0)
+        else:
+            self.drive.tankDrive(0, 0)
+        # center pos left switch boi
+        if self.timer.get() < 1.000:
+            self.drive.tankDrive(0,.4)
+        elif self.timer.get() < 3.00
+            self.drive.tankDrive(.1,.3)
+        elif self.timer.get() < 5.00
+            self.drive.tankDrive(.3,.0)
+        else:
+            self.drive.tankDrive(0, 0)
+        #right pos right switch
+        if self.timer.get() < 1.000:
+            self.drive.tankDrive(.2,.2)
+        elif self.timer.get() < 3.000:
+            self.drive.tankDrive(.4,0)
+        else:
+            self.drive.tankDrive(0, 0)
+        # left pos right switch
+        if self.timer.get() < 1.00:
+            self.drive.tankDrive(.2,.2)
+        elif self.timer.get() < 3.000:
+             self.drive.tankDrive(.35,.2)
+        elif self.timer.get() < 4.000:
+            self.drive.tankDrive(.4,0)
+        else:
+            self.drive.tankDrive(0, 0)
+        #center pos right switch
+        if self.timer.get() < 1.000:
+         self.drive.tankDrive(.3,.3)
+        elif self.timer.get() < 3.00
+         self.drive.tankDrive(.3,.1)
+        elif self.timer.get() < 5.00
+            self.drive.tankDrive(.0,.3)
+        else:
+            self.drive.tankDrive(0,0)
+
+
+
+
 
 if __name__ == '__main__':
 wpi.run(MyRobot)
