@@ -109,7 +109,7 @@ class MyRobot(wpi.IterativeRobot):
             self.drive.tankDrive(.0,.3)
         else:
             self.drive.tankDrive(0,0)
-            #puggs
+
 
 
 
