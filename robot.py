@@ -14,7 +14,7 @@ class MyRobot(wpi.IterativeRobot):
         self.sd.putBoolean("Right lane", False)
         self.sd.putBoolean("right goal",False)
         self.sd.getBoolean("left goal",False)
-        self.solenoid = wpi.solenoid
+        self.solenoid = wpi.Solenoid(0)
         self.lift = wpi.Spark(5)
         self.frontLeftMotor = wpi.Spark(2)
         self.rearLeftMotor = wpi.Spark(3)
@@ -26,7 +26,7 @@ class MyRobot(wpi.IterativeRobot):
 
         self.drive = drive.DifferentialDrive(self.left, self.right)
         self.drive.setExpiration(0.1)
-        self.controller = wpi.XboxController(0)
+        self.joystick = wpi.XboxController(0)
 
         self.timer = wpi.Timer()
         self.deltaTime = 0
@@ -37,7 +37,7 @@ class MyRobot(wpi.IterativeRobot):
 
     def teleopPeriodic(self):
         # motor for lift
-        self.lift.set(self.controller.getTriggerAxis(GenericHID.Hand.kLeft) + self.controller.getTriggerAxis(GenericHID.Hand.kRight)
+        self.lift.set(self.joystick.getTriggerAxis(GenericHID.Hand.kLeft) + self.joystick.getTriggerAxis(GenericHID.Hand.kRight))
         #for dumper boi
         if self.joystick.getXButton() and self.timer.get() > 0.2:
             state = self.solenoid.get()
@@ -50,7 +50,7 @@ class MyRobot(wpi.IterativeRobot):
 
 
         # for grabber piston boiii
-        if self.joystick.pressAButton() and self.timer.get() > 0.2:
+        if self.joystick.getAButton() and self.timer.get() > 0.2:
             state = self.solenoid.get()
             self.timer.reset()
             if state == False:
@@ -61,20 +61,20 @@ class MyRobot(wpi.IterativeRobot):
 
         self.drivestate = True
 
-        self.drive.tankDrive(self.controller.getY(GenericHID.Hand.kLeft) * -1, self.controller.getY(GenericHID.Hand.kRight) * -1)
+        self.drive.tankDrive(self.joystick.getY(GenericHID.Hand.kLeft) * -1, self.joystick.getY(GenericHID.Hand.kRight) * -1)
 
 
     def autonomousInit(self):
-        if self.sd.getBoolean("Left lane"):
+        if self.sd.getBoolean("Left lane", False):
             self.auto_state = 1
-        elif self.sd.getBoolean("Center lane"):
+        elif self.sd.getBoolean("Center lane", False):
             self.auto_state = 3
-        elif self.sd.getBoolean("Right lane"):
+        elif self.sd.getBoolean("Right lane", False):
             self.auto_state = 4
 
-        if self.sd.getBoolean("left goal"):
+        if self.sd.getBoolean("left goal", False):
             self.sd.getBoolean = 5
-        elif self.sd.getBoolean("right goal"):
+        elif self.sd.getBoolean("right goal", False):
             self.sd.getBoolean = 6
 
         self.timer.stop()
@@ -145,4 +145,4 @@ class MyRobot(wpi.IterativeRobot):
 
 
 if __name__ == '__main__':
-wpi.run(MyRobot)
+    wpi.run(MyRobot)
