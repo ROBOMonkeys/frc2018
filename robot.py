@@ -13,7 +13,7 @@ class MyRobot(wpi.IterativeRobot):
         self.sd.putBoolean("Left lane", False)
         self.sd.putBoolean("Right lane", False)
         self.sd.putBoolean("right goal",False)
-        self.sd.getBoolean("left goal",False)
+        self.sd.putBoolean("left goal",False)
         self.solenoid = wpi.Solenoid(0)
         self.lift = wpi.Spark(5)
         self.frontLeftMotor = wpi.Spark(2)
