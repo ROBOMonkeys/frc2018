@@ -40,7 +40,7 @@ class MyRobot(wpi.IterativeRobot):
 
 
         # for grabber piston boiii
-        if self.joystick.getAButton() and self.timer.get() > 0.2:
+        if self.joystick.pressAButton() and self.timer.get() > 0.2:
             state = self.solenoid.get()
             self.timer.reset()
             if state == False:
