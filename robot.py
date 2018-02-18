@@ -88,55 +88,57 @@ class MyRobot(wpi.IterativeRobot):
         if self.auto_state == 1:
             if self.auto_goal == 5:
                 if self.timer.get() < 1.000:
-                    self.drive.tankDrive(.2,.2)
+                    self.drive.tankDrive(.5,.5)
                 elif self.timer.get() < 3.000:
-                    self.drive.tankDrive(.4,0)
+                    self.drive.tankDrive(.5,.5)
                 else:
-                    self.drive.tankDrive(0, 0)
+                    self.drive.tankDrive(.5, .5)
             else:
                 # left lane right goal
                 if self.timer.get() < 1.00:
-                    self.drive.tankDrive(.2, .2)
+                    self.drive.tankDrive(.5, .5)
                 elif self.timer.get() < 3.000:
-                    self.drive.tankDrive(.35, .2)
+                    self.drive.tankDrive(.5, .5)
                 elif self.timer.get() < 4.000:
-                    self.drive.tankDrive(.4, 0)
+                    self.drive.tankDrive(.5, .5)
                 #center lane right goal
         elif self.auto_state == 3:
             if self.auto_goal == 6:
                 if self.timer.get() < 1.000:
-                    self.drive.tankDrive(.3, .3)
+                    self.drive.tankDrive(.5, .5)
                 elif self.timer.get() < 3.00:
-                    self.drive.tankDrive(.3, .1)
+                    self.drive.tankDrive(.5, .5)
                 elif self.timer.get() < 5.00:
-                    self.drive.tankDrive(.0, .3)
-                else:
-                    self.drive.tankDrive(0, 0)
-            else:
-                # center lane left goal
-                if self.timer.get() < 1.000:
-                    self.drive.tankDrive(0, .4)
-                elif self.timer.get() < 3.00:
-                    self.drive.tankDrive(.1, .3)
-                elif self.timer.get() < 5.00:
-                    self.drive.tankDrive(.3, 0)
-                    #right lane right goal
-        elif self.auto_state == 4:
-            if self.auto_goal == 6:
-                if self.timer.get() < 1.000:
-                    self.drive.tankDrive(.7, .7)
-                elif self.timer.get() < 3.000:
-                    self.drive.tankDrive(.7, .5)
+                    self.drive.tankDrive(.5, .5)
                 else:
                     self.drive.tankDrive(.5, .5)
             else:
+                # center lane left goal
+                if self.timer.get() < 1.000:
+                    self.drive.tankDrive(.5, .5)
+                elif self.timer.get() < 3.00:
+                    self.drive.tankDrive(.5, .5)
+                elif self.timer.get() < 5.00:
+                    self.drive.tankDrive(.5, 5)
+                    #right lane right goal
+        elif self.auto_state == 4:
+            if self.auto_goal == 6:
+                if self.timer.get() < 3.650:
+                    self.drive.tankDrive(.6, .63)
+                elif self.timer.get() < 5.110:
+                    self.drive.tankDrive(.62, 0)
+                elif self.timer.get() < 5.730:
+                    self.drive.tankDrive(-.5,-.52)
+                else:
+                    self.drive.tankDrive(0, 0)
+            else:
                 #right lane left goal
                 if self.timer.get() < 1.00:
-                    self.drive.tankDrive(.7, .7)
+                    self.drive.tankDrive(.5, .5)
                 elif self.timer.get() < 3.000:
-                    self.drive.tankDrive(.75, .85)
+                    self.drive.tankDrive(.5, .5)
                 elif self.timer.get() < 4.000:
-                    self.drive.tankDrive(.9, .5)
+                    self.drive.tankDrive(.5, .5)
 
 if __name__ == '__main__':
     wpi.run(MyRobot)
