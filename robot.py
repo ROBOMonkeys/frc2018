@@ -4,13 +4,18 @@ from wpilib.interfaces.generichid import GenericHID
 
 
 class MyRobot(wpi.IterativeRobot):
+    solenoidChannel = 0
+    solenoidChannel = 1
+
     def robotInit(self):
         self.auto_goal = 0
+
         self.auto_state = 0
+        self.solenoid = 0
 
         self.sd = wpi.SmartDashboard()
 
-        self.sd.putBoolean("Center lane", False)
+        self.sd.putBoolean("Center Lane", False)
         self.sd.putBoolean("Left lane", False)
         self.sd.putBoolean("Right lane", False)
         self.sd.putBoolean("right goal", False)
@@ -33,6 +38,7 @@ class MyRobot(wpi.IterativeRobot):
         self.deltaTime = 0
 
     def teleopInit(self):
+
         self.drive.setSafetyEnabled(True)
 
     def teleopPeriodic(self):
@@ -56,16 +62,13 @@ class MyRobot(wpi.IterativeRobot):
             else:
                 self.solenoid.set(False)
 
-        left = self.joystick.getY(GenericHID.Hand.kLeft) * -1
-        right = self.joystick.getY(GenericHID.Hand.kRight) * -1
 
-        wpi.DriverStation.reportWarning(str(left) + " " + str(right), False)
+        self.drivestate = True
 
-        self.drive.tankDrive(left, right)
+        self.drive.tankDrive(self.joystick.getY(GenericHID.Hand.kLeft) * -1, self.joystick.getY(GenericHID.Hand.kRight) * -1)
+
 
     def autonomousInit(self):
-        self.drive.setSafetyEnabled(False)
-
         if self.sd.getBoolean("Left lane", False):
             self.auto_state = 1
         elif self.sd.getBoolean("Center lane", False):
@@ -83,62 +86,68 @@ class MyRobot(wpi.IterativeRobot):
         self.timer.start()
 
     def autonomousPeriodic(self):
-        #wpi.DriverStation.reportError(str(self.auto_state) + " " + str(self.auto_goal), None)
         #left lane left goal
         if self.auto_state == 1:
             if self.auto_goal == 5:
                 if self.timer.get() < 1.000:
-                    self.drive.tankDrive(.5,.5)
+                    self.drive.tankDrive(.2,.2)
                 elif self.timer.get() < 3.000:
-                    self.drive.tankDrive(.5,.5)
+                    self.drive.tankDrive(.4,0)
                 else:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(0, 0)
             else:
                 # left lane right goal
                 if self.timer.get() < 1.00:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.2, .2)
                 elif self.timer.get() < 3.000:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.35, .2)
                 elif self.timer.get() < 4.000:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.4, 0)
                 #center lane right goal
         elif self.auto_state == 3:
             if self.auto_goal == 6:
                 if self.timer.get() < 1.000:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.3, .3)
                 elif self.timer.get() < 3.00:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.3, .1)
                 elif self.timer.get() < 5.00:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.0, .3)
                 else:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(0, 0)
             else:
                 # center lane left goal
                 if self.timer.get() < 1.000:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(0, .4)
                 elif self.timer.get() < 3.00:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.1, .3)
                 elif self.timer.get() < 5.00:
-                    self.drive.tankDrive(.5, 5)
+                    self.drive.tankDrive(.3, 0)
                     #right lane right goal
-        elif self.auto_state == 4:
+            elif self.auto_state == 4:
             if self.auto_goal == 6:
                 if self.timer.get() < 3.650:
                     self.drive.tankDrive(.6, .63)
                 elif self.timer.get() < 5.110:
                     self.drive.tankDrive(.62, 0)
                 elif self.timer.get() < 5.730:
-                    self.drive.tankDrive(-.5,-.52)
+                    self.drive.tankDrive(-.55, -.58)
                 else:
                     self.drive.tankDrive(0, 0)
             else:
                 #right lane left goal
                 if self.timer.get() < 1.00:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.2, .2)
                 elif self.timer.get() < 3.000:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.25, .35)
                 elif self.timer.get() < 4.000:
-                    self.drive.tankDrive(.5, .5)
+                    self.drive.tankDrive(.4, 0)
+                elif self.timer.get()< 4.75:
+                    self.solenoid.set(True)
+                elif self.timer.get() < 5.25
+                    self.drive.tankDrive(0,.4)
+
+                    #pugworthy
+
 
 if __name__ == '__main__':
     wpi.run(MyRobot)
