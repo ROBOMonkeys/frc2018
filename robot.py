@@ -45,7 +45,7 @@ class MyRobot(wpi.IterativeRobot):
         # motor for lift
         self.lift.set(self.joystick.getTriggerAxis(GenericHID.Hand.kLeft) + self.joystick.getTriggerAxis(GenericHID.Hand.kRight))
         #for dumper boi
-        if self.joystick.getXButtonPressed()
+        if self.joystick.getXButtonPressed():
             state = self.dump_sole.get()
             self.timer.reset()
             if state == False:
@@ -117,7 +117,7 @@ class MyRobot(wpi.IterativeRobot):
                 elif self.timer.get() < 5.00:
                     self.drive.tankDrive(.3, 0)
                     #right lane right goal
-            elif self.auto_state == 4:
+        elif self.auto_state == 4:
             if self.auto_goal == 6:
                 if self.timer.get() < 3.650:
                     self.drive.tankDrive(.6, .63)
@@ -137,7 +137,7 @@ class MyRobot(wpi.IterativeRobot):
                     self.drive.tankDrive(.4, 0)
                 elif self.timer.get()< 4.75:
                     self.solenoid.set(True)
-                elif self.timer.get() < 5.25
+                elif self.timer.get() < 5.25:
                     self.drive.tankDrive(0,.4)
 
                     #pugworthy
