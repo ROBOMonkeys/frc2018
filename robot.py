@@ -11,7 +11,6 @@ class MyRobot(wpi.IterativeRobot):
         self.auto_goal = 0
 
         self.auto_state = 0
-        self.solenoid = 0
 
         self.sd = wpi.SmartDashboard()
 
@@ -20,7 +19,8 @@ class MyRobot(wpi.IterativeRobot):
         self.sd.putBoolean("Right lane", False)
         self.sd.putBoolean("right goal", False)
         self.sd.putBoolean("left goal", False)
-        self.solenoid = wpi.Solenoid(0)
+        self.gripper_sole = wpi.Solenoid(0)
+        self.dump_sole = wpi.Solenoid(1)
         self.lift = wpi.Spark(5)
         self.frontLeftMotor = wpi.Spark(2)
         self.rearLeftMotor = wpi.Spark(3)
@@ -45,22 +45,16 @@ class MyRobot(wpi.IterativeRobot):
         # motor for lift
         self.lift.set(self.joystick.getTriggerAxis(GenericHID.Hand.kLeft) + self.joystick.getTriggerAxis(GenericHID.Hand.kRight))
         #for dumper boi
-        if self.joystick.getXButton() and self.timer.get() > 0.2:
-            state = self.solenoid.get()
+        if self.joystick.getXButtonPressed()
+            state = self.dump_sole.get()
             self.timer.reset()
             if state == False:
-                self.solenoid.set(True)
+                self.dump_sole.set(True)
             else:
-                self.solenoid.set(False)
+                self.dump_sole.set(False)
 
         # for grabber piston boiii
-        if self.joystick.getAButton() and self.timer.get() > 0.2:
-            state = self.solenoid.get()
-            self.timer.reset()
-            if state == False:
-                self.solenoid.set(True)
-            else:
-                self.solenoid.set(False)
+        self.gripper_sole.set(self.joystick.getAButton())
 
 
         self.drivestate = True
