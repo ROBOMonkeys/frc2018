@@ -140,7 +140,7 @@ class MyRobot(wpi.IterativeRobot):
                 elif self.timer.get() < 5.25:
                     self.drive.tankDrive(0,.4)
 
-                    #pugworthy
+                    #pugworthyy
 
 
 if __name__ == '__main__':
