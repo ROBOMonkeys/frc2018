@@ -125,7 +125,7 @@ class MyRobot(wpi.IterativeRobot):
                     self.drive.tankDrive(.8, 0)
                 elif self.timer.get() < 6.00:
                     self.drive.tankDrive(-.55, -.58)
-                elif self.timer.get() < 6.50:
+                elif self.timer.get() < 8.50:
                     self.dump_sole.set(True)
                 else:
                     self.drive.tankDrive(0, 0)
