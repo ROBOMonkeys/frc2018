@@ -120,9 +120,9 @@ class MyRobot(wpi.IterativeRobot):
         elif self.auto_state == 4:
             if self.auto_goal == 6:
                 if self.timer.get() < 3.650:
-                    self.drive.tankDrive(.6, .63)
+                    self.drive.tankDrive(.7, .7)
                 elif self.timer.get() < 5.110:
-                    self.drive.tankDrive(.62, 0)
+                    self.drive.tankDrive(.7, 0)
                 elif self.timer.get() < 5.730:
                     self.drive.tankDrive(-.55, -.58)
                 else:
