@@ -143,7 +143,7 @@ class MyRobot(wpi.IterativeRobot):
                     self.solenoid.set(True)
                 elif self.timer.get() < 5.25:
                     self.drive.tankDrive(0,.4)
-                    #pugs indeed
+                    #pugs indeed lolz
 
 
 
