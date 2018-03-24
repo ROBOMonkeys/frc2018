@@ -8,17 +8,18 @@ class MyRobot(wpi.IterativeRobot):
     solenoidChannel = 1
 
     def robotInit(self):
-        self.auto_goal = 0
-
-        self.auto_state = 0
-
         self.sd = wpi.SmartDashboard()
 
+'''        
+        self.auto_goal = 0
+        self.auto_state = 0
         self.sd.putBoolean("Center Lane", False)
         self.sd.putBoolean("Left lane", False)
         self.sd.putBoolean("Right lane", False)
         self.sd.putBoolean("right goal", False)
         self.sd.putBoolean("left goal", False)
+'''
+        
         self.gripper_sole = wpi.DoubleSolenoid(0,2)
         self.dump_sole = wpi.Solenoid(1)
         self.lift = wpi.Spark(5)
@@ -31,14 +32,12 @@ class MyRobot(wpi.IterativeRobot):
         self.right = wpi.SpeedControllerGroup(self.frontRightMotor, self.rearRightMotor)
 
         self.drive = drive.DifferentialDrive(self.left, self.right)
-        #self.drive.setExpiration(0.1)
+        self.drive.setExpiration(0.1)
         self.joystick = wpi.XboxController(0)
 
         self.timer = wpi.Timer()
-        self.deltaTime = 0
 
     def teleopInit(self):
-
         self.drive.setSafetyEnabled(True)
 
     def teleopPeriodic(self):
