@@ -25,7 +25,7 @@ class MyRobot(wpi.IterativeRobot):
         self.frontLeftMotor = wpi.Spark(2)
         self.rearLeftMotor = wpi.Spark(3)
         self.frontRightMotor = wpi.Spark(1)
-        self.rearRightMotor = wpi.Spark(0)
+        self.rearRightMotor = wpi.Spark(0)   
 
         self.left = wpi.SpeedControllerGroup(self.frontLeftMotor, self.rearLeftMotor)
         self.right = wpi.SpeedControllerGroup(self.frontRightMotor, self.rearRightMotor)
@@ -75,23 +75,29 @@ class MyRobot(wpi.IterativeRobot):
         elif self.sd.getBoolean("right goal", False):
             self.auto_goal = 6
 
+
         self.timer.stop()
         self.timer.reset()
         self.timer.start()
 
     def autonomousPeriodic(self):
+        if self.timer.get() <2.00
+            self.drive.tankDrive(.5,.5)
+        else:
+            self.drive.tankDrive(0,0)
+        '''
         #left lane left goal
         if self.auto_state == 1:
             if self.auto_goal == 5:
-                if self.timer.get() < 1.000:
+                if self.timer.get() < 2.000:
                     self.drive.tankDrive(.5,.5)
                 elif self.timer.get() < 3.000:
-                    self.drive.tankDrive(.5,0)
+                   self.drive.tankDrive(.5,0)
                 else:
                     self.drive.tankDrive(0, 0)
             else:
                 # left lane right goal
-                if self.timer.get() < 1.00:
+                if self.timer.get() < 2.00:
                     self.drive.tankDrive(.5, .5)
                 elif self.timer.get() < 3.000:
                     self.drive.tankDrive(.35, .2)
@@ -127,8 +133,8 @@ class MyRobot(wpi.IterativeRobot):
                     self.drive.tankDrive(.5, 0)
                 elif self.timer.get() < 6.00:
                     self.drive.tankDrive(-.55, -.58)
-                elif self.timer.get() < 8.50:
-                    self.dump_sole.set(True)
+                #elif self.timer.get() < 8.50:
+                    #self.dump_sole.set(True)
                 else:
                     self.drive.tankDrive(0, 0)
             else:
@@ -146,7 +152,7 @@ class MyRobot(wpi.IterativeRobot):
                     #pugs indeed lolzzzz
 
 
-
+'''
 
 if __name__ == '__main__':
     wpi.run(MyRobot)
