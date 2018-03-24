@@ -1,15 +1,35 @@
 import wpilib as wpi
+import networktables.util as ntu
+import networktables.networktable as nt
 import wpilib.drive as drive
 from wpilib.interfaces.generichid import GenericHID
+
 
 
 class MyRobot(wpi.IterativeRobot):
     solenoidChannel = 0
     solenoidChannel = 1
 
+    def set_dump_mode(self, value):
+        self.dump_mode = value
+    
     def robotInit(self):
         self.sd = wpi.SmartDashboard()
 
+        self.sd.putInt("team", wpi.DriverStation.getAlliance())
+        
+        self.dump_mode = True
+        self.dump_chooser = wpi.SendableChooser()
+        self.dump_chooser.addDefault("Yes", 'True')
+        self.dump_chooser.addObject("No", 'False')
+        self.sd.putData("Dump?", self.dump_chooser)
+
+        self.cc = ntu.ChooserControl("Dump?",
+                                     None,
+                                     self.set_dump_mode)
+
+        wip.CameraServer.launch("vision/vision.py:run")
+        
 '''        
         self.auto_goal = 0
         self.auto_state = 0
@@ -19,14 +39,13 @@ class MyRobot(wpi.IterativeRobot):
         self.sd.putBoolean("right goal", False)
         self.sd.putBoolean("left goal", False)
 '''
-        
         self.gripper_sole = wpi.DoubleSolenoid(0,2)
         self.dump_sole = wpi.Solenoid(1)
         self.lift = wpi.Spark(5)
         self.frontLeftMotor = wpi.Spark(2)
         self.rearLeftMotor = wpi.Spark(3)
         self.frontRightMotor = wpi.Spark(1)
-        self.rearRightMotor = wpi.Spark(0)   
+        self.rearRightMotor = wpi.Spark(0)
 
         self.left = wpi.SpeedControllerGroup(self.frontLeftMotor, self.rearLeftMotor)
         self.right = wpi.SpeedControllerGroup(self.frontRightMotor, self.rearRightMotor)
@@ -84,7 +103,8 @@ class MyRobot(wpi.IterativeRobot):
             self.drive.tankDrive(-.5,-.5)
         else:
             self.drive.tankDrive(0,0)
-        '''
+            
+'''
         #left lane left goal
         if self.auto_state == 1:
             if self.auto_goal == 5:
@@ -149,8 +169,6 @@ class MyRobot(wpi.IterativeRobot):
                 elif self.timer.get() < 5.25:
                     self.drive.tankDrive(0,.4)
                     #pugs indeed lolzzzz
-
-
 '''
 
 if __name__ == '__main__':
