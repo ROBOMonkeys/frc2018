@@ -15,19 +15,19 @@ class MyRobot(wpi.IterativeRobot):
     
     def robotInit(self):
         self.sd = wpi.SmartDashboard()
-
+        
         self.sd.putInt("team", wpi.DriverStation.getAlliance())
         
         self.dump_mode = True
         self.dump_chooser = wpi.SendableChooser()
-        self.dump_chooser.addDefault("Yes", 'True')
-        self.dump_chooser.addObject("No", 'False')
+        self.dump_chooser.addDefault("Yes", True)
+        self.dump_chooser.addObject("No", False)
         self.sd.putData("Dump?", self.dump_chooser)
-
+        
         self.cc = ntu.ChooserControl("Dump?",
                                      None,
                                      self.set_dump_mode)
-
+        
         wip.CameraServer.launch("vision/vision.py:run")
         
 '''        
@@ -46,40 +46,38 @@ class MyRobot(wpi.IterativeRobot):
         self.rearLeftMotor = wpi.Spark(3)
         self.frontRightMotor = wpi.Spark(1)
         self.rearRightMotor = wpi.Spark(0)
-
+        
         self.left = wpi.SpeedControllerGroup(self.frontLeftMotor, self.rearLeftMotor)
         self.right = wpi.SpeedControllerGroup(self.frontRightMotor, self.rearRightMotor)
-
+        
         self.drive = drive.DifferentialDrive(self.left, self.right)
         self.drive.setExpiration(0.1)
         self.joystick = wpi.XboxController(0)
-
+        
         self.timer = wpi.Timer()
-
+    
+    
     def teleopInit(self):
+        self.sd.putString("state", "teleop")
         self.drive.setSafetyEnabled(True)
-
+    
     def teleopPeriodic(self):
         # motor for lift
         self.lift.set(self.joystick.getTriggerAxis(GenericHID.Hand.kLeft) + self.joystick.getTriggerAxis(GenericHID.Hand.kRight))
+        
         #for dumper boi
         if self.joystick.getXButtonPressed():
-            state = self.dump_sole.get()
-            self.timer.reset()
-            if state == False:
-                self.dump_sole.set(True)
-            else:
-                self.dump_sole.set(False)
-
+            self.dump_sole.set(not self.dump_sole.get())
+        
         # for grabber piston boiii
         if not self.gripper_sole.get() == wpi.DoubleSolenoid.kFoward and (self.joystick.getAbutton()):
             self.gripper_sole.set(wpi.DoubleSolenoid.kForward)
         elif self.gripper_sole.get() == wpi.DoubleSolenoid.kFoward and not (self.joystick.getAbutton()):
             self.gripper_sole.set(wpi.DoubleSolenoid.kReverse)
-
+        
         self.drive.tankDrive(self.joystick.getY(GenericHID.Hand.kLeft) * -1, self.joystick.getY(GenericHID.Hand.kRight) * -1)
-
-
+    
+    
     def autonomousInit(self):
        ''' if self.sd.getBoolean("Left lane", False):
             self.auto_state = 1
@@ -93,17 +91,21 @@ class MyRobot(wpi.IterativeRobot):
         elif self.sd.getBoolean("right goal", False):
             self.auto_goal = 6
     '''
-
-        self.timer.stop()
-        self.timer.reset()
-        self.timer.start()
-
+       
+       self.sd.putString("state", "auto")
+       self.timer.stop()
+       self.timer.reset()
+       self.timer.start()
+    
     def autonomousPeriodic(self):
-        if self.timer.get() <2.00
+        if self.timer.get() < 2.00
             self.drive.tankDrive(-.5,-.5)
         else:
             self.drive.tankDrive(0,0)
             
+            if self.sd.getBoolean("dump") and self.dump_mode:
+                self.dump_sole.set(True)
+    
 '''
         #left lane left goal
         if self.auto_state == 1:

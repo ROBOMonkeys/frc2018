@@ -29,7 +29,11 @@ def run():
 
         if time == 0:
             continue
-
         
-    
-    
+        if state == "auto":
+            state = n.getString("state")
+            
+            if pipeline.process(img):
+                n.putBoolean("dump", True)
+        else:
+            pipeline = None
