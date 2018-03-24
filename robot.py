@@ -63,7 +63,7 @@ class MyRobot(wpi.IterativeRobot):
 
 
     def autonomousInit(self):
-        if self.sd.getBoolean("Left lane", False):
+       ''' if self.sd.getBoolean("Left lane", False):
             self.auto_state = 1
         elif self.sd.getBoolean("Center lane", False):
             self.auto_state = 3
@@ -74,7 +74,7 @@ class MyRobot(wpi.IterativeRobot):
             self.auto_goal = 5
         elif self.sd.getBoolean("right goal", False):
             self.auto_goal = 6
-
+    '''
 
         self.timer.stop()
         self.timer.reset()
@@ -82,7 +82,7 @@ class MyRobot(wpi.IterativeRobot):
 
     def autonomousPeriodic(self):
         if self.timer.get() <2.00
-            self.drive.tankDrive(.5,.5)
+            self.drive.tankDrive(-.5,-.5)
         else:
             self.drive.tankDrive(0,0)
         '''
