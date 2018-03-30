@@ -14,9 +14,18 @@ class MyRobot(wpi.IterativeRobot):
         self.dump_mode = value
     
     def robotInit(self):
+        '''        
+        self.auto_goal = 0
+        self.auto_state = 0
+        self.sd.putBoolean("Center Lane", False)
+        self.sd.putBoolean("Left lane", False)
+        self.sd.putBoolean("Right lane", False)
+        self.sd.putBoolean("right goal", False)
+        self.sd.putBoolean("left goal", False)
+        '''
         self.sd = wpi.SmartDashboard()
         
-        self.sd.putInt("team", wpi.DriverStation.getAlliance())
+        self.sd.putNumber("team", wpi.DriverStation.getInstance().getAlliance())
         
         self.dump_mode = True
         self.dump_chooser = wpi.SendableChooser()
@@ -28,17 +37,8 @@ class MyRobot(wpi.IterativeRobot):
                                      None,
                                      self.set_dump_mode)
         
-        wip.CameraServer.launch("vision/vision.py:run")
+        wpi.CameraServer.launch("vision/vision.py:run")
         
-'''        
-        self.auto_goal = 0
-        self.auto_state = 0
-        self.sd.putBoolean("Center Lane", False)
-        self.sd.putBoolean("Left lane", False)
-        self.sd.putBoolean("Right lane", False)
-        self.sd.putBoolean("right goal", False)
-        self.sd.putBoolean("left goal", False)
-'''
         self.gripper_sole = wpi.DoubleSolenoid(0,2)
         self.dump_sole = wpi.Solenoid(1)
         self.lift = wpi.Spark(5)
@@ -70,10 +70,10 @@ class MyRobot(wpi.IterativeRobot):
             self.dump_sole.set(not self.dump_sole.get())
         
         # for grabber piston boiii
-        if not self.gripper_sole.get() == wpi.DoubleSolenoid.kFoward and (self.joystick.getAbutton()):
-            self.gripper_sole.set(wpi.DoubleSolenoid.kForward)
-        elif self.gripper_sole.get() == wpi.DoubleSolenoid.kFoward and not (self.joystick.getAbutton()):
-            self.gripper_sole.set(wpi.DoubleSolenoid.kReverse)
+        if not self.gripper_sole.get() == wpi.DoubleSolenoid.Value.kForward and (self.joystick.getAButton()):
+            self.gripper_sole.set(wpi.DoubleSolenoid.Value.kForward)
+        elif self.gripper_sole.get() == wpi.DoubleSolenoid.Value.kForward and not (self.joystick.getAButton()):
+            self.gripper_sole.set(wpi.DoubleSolenoid.Value.kReverse)
         
         self.drive.tankDrive(self.joystick.getY(GenericHID.Hand.kLeft) * -1, self.joystick.getY(GenericHID.Hand.kRight) * -1)
     
@@ -90,23 +90,16 @@ class MyRobot(wpi.IterativeRobot):
             self.auto_goal = 5
         elif self.sd.getBoolean("right goal", False):
             self.auto_goal = 6
-    '''
-       
+       '''
+
+       self.drive.setSafetyEnabled(True)
        self.sd.putString("state", "auto")
        self.timer.stop()
        self.timer.reset()
        self.timer.start()
     
     def autonomousPeriodic(self):
-        if self.timer.get() < 2.00
-            self.drive.tankDrive(-.5,-.5)
-        else:
-            self.drive.tankDrive(0,0)
-            
-            if self.sd.getBoolean("dump") and self.dump_mode:
-                self.dump_sole.set(True)
-    
-'''
+        '''
         #left lane left goal
         if self.auto_state == 1:
             if self.auto_goal == 5:
@@ -171,7 +164,16 @@ class MyRobot(wpi.IterativeRobot):
                 elif self.timer.get() < 5.25:
                     self.drive.tankDrive(0,.4)
                     #pugs indeed lolzzzz
-'''
+        '''
+        
+        if self.timer.get() < 2.00:
+            self.drive.tankDrive(-.5,-.5)
+        else:
+            self.drive.tankDrive(0,0)
+            
+            if self.sd.getBoolean("dump", False) and self.dump_mode:
+                self.dump_sole.set(True)
+    
 
 if __name__ == '__main__':
     wpi.run(MyRobot)
